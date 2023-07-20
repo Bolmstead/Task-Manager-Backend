@@ -1,0 +1,76 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": [
+        "title",
+        "description",
+        "status",
+        "creatorId",
+        "assignments"
+    ],
+    "properties": {
+        "title": {
+            "type": "string",
+            "default": "",
+            "title": "The title Schema",
+            "examples": [
+                "Create Book"
+            ]
+        },
+        "description": {
+            "type": "string",
+            "default": "",
+            "title": "The description Schema",
+            "examples": [
+                "make it good"
+            ]
+        },
+        "status": {
+            "type": "string",
+            "default": "",
+            "title": "The status Schema",
+            "examples": [
+                "To Do"
+            ]
+        },
+        "creatorId": {
+            "type": "string",
+            "default": "",
+            "title": "The creatorId Schema",
+            "examples": [
+                "abc123"
+            ]
+        },
+        "assignments": {
+            "type": "array",
+            "default": [],
+            "title": "The assignments Schema",
+            "items": {
+                "type": "string",
+                "title": "A Schema",
+                "examples": [
+                    "3jcdi2",
+                    "215saf44"
+                ]
+            },
+            "examples": [
+                ["3jcdi2",
+                    "215saf44"
+                ]
+            ]
+        }
+    },
+    "examples": [{
+        "title": "Create Book",
+        "description": "make it good",
+        "status": "To Do",
+        "creatorId": "abc123",
+        "assignments": [
+            "3jcdi2",
+            "215saf44"
+        ]
+    }]
+}
