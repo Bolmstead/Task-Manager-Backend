@@ -3,10 +3,9 @@ import Task from "../models/task.model.js";
 import taskSchema from "../schemas/task.schema.json" assert { type: "json" };
 
 /**
- * Create new Task
- * @public
+ * Register and Login User
  */
-export async function createTask(req, res, next) {
+export async function register(req, res, next) {
   try {
     console.log("req.body", req.body);
     const result = jsonschema.validate(req.body, taskSchema, {
@@ -42,17 +41,8 @@ export async function createTask(req, res, next) {
 }
 
 /**
- * Get task
- * @public
+ * Login User
  */
-export async function getTasks(req, res) {
-  return res.json("");
-}
-
-/**
- * Get task details
- * @public
- */
-export async function getTaskDetails(req, res) {
+export async function login(req, res, next) {
   return res.json("");
 }

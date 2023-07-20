@@ -2,14 +2,14 @@
 
 // const jsonschema = require("jsonschema");
 import { Router } from "express";
-import { register, login } from "../controllers/auth";
+import { login, register } from "../controllers/auth";
 
 const router = new Router();
 
-// create User with data in request's body
-router.post("/", register);
+// Create User and Log User in
+router.post("/register", register);
 
-// create User with data in request's body
-router.post("/", login);
+// Login to site
+router.post("/login", login);
 
 export default router;
