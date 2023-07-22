@@ -6,6 +6,8 @@ import express, { json, urlencoded } from "express";
 import helmet from "helmet";
 import { authenticateJWT } from "./middlewares/auth.js";
 import routes from "./routes/index.js";
+import { ExpressError } from "./expressError.js";
+
 // const error = require("../api/middlewares/error");
 
 // import { authenticateJWT } from "./middleware/auth";
@@ -35,11 +37,18 @@ app.use("/", routes);
 
 // app.use("/products", productsRoutes);
 
+/** Handle 404 errors -- this matches everything */
+app.use(function (req, res, next) {
+  return next(new ExpressError(`Not Found`, 404));
+});
+
 /** Generic error handler; anything unhandled goes here. */
 app.use(function (err, req, res, next) {
-  console.error(err.stack);
+  if (process.env.NODE_ENV !== "development") {
+    console.error(err.stack);
+  }
   const status = err.status || 500;
-  const { message } = err;
+  const message = err.message;
 
   return res.status(status).json({
     error: { message, status },

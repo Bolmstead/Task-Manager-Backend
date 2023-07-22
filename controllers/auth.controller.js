@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jsonschema from "jsonschema";
 import jwt from "jsonwebtoken";
+import { ExpressError } from "../expressError.js";
 import User from "../models/user.model.js";
 import loginSchema from "../schemas/login.schema.json" assert { type: "json" };
 import registerSchema from "../schemas/register.schema.json" assert { type: "json" };
@@ -35,10 +36,7 @@ export async function register(req, res, next) {
           message: "User created",
         });
       } else {
-        return res.json({
-          status: "error",
-          errors: "Username already taken",
-        });
+        return next(new ExpressError(`Username already exists`, 403));
       }
     } else {
       const errors = [];
@@ -47,13 +45,10 @@ export async function register(req, res, next) {
           errors.push(err);
         }
       }
-      return res.json({
-        status: "error",
-        errors: errors,
-      });
+      return next(new ExpressError(`Validation Error: ${errors}`, 403));
     }
   } catch (error) {
-    return res.json({ status: "error", error });
+    return next(error);
   }
 }
 
@@ -66,33 +61,18 @@ export async function login(req, res, next) {
       required: true,
     });
 
-    console.log(
-      "🚀 ~ file: auth.controller.js:69 ~ login ~ schemaResult.valid:",
-      schemaResult.valid
-    );
-
     if (schemaResult.valid) {
       const { username, password } = req.body;
 
-      console.log(
-        "🚀 ~ file: auth.controller.js:72 ~ login ~ username:",
-        username
-      );
       let foundUser = await User.findOne({ username });
-      console.log(
-        "🚀 ~ file: auth.controller.js:55 ~ login ~ foundUser:",
-        foundUser
-      );
+
       if (foundUser) {
         // compare hashed password to a new hash from password
         const isPasswordValid = await bcrypt.compare(
           password,
           foundUser.password
         );
-        console.log(
-          "🚀 ~ file: auth.controller.js:78 ~ login ~ isPasswordValid:",
-          isPasswordValid
-        );
+
         if (isPasswordValid) {
           const token = jwt.sign(
             { username: foundUser.username },
@@ -100,10 +80,10 @@ export async function login(req, res, next) {
           );
           return res.json({ token });
         } else {
-          return res.json({ error: "Password is invalid" });
+          return next(new ExpressError(`Username or Password is Invalid`, 401));
         }
       } else {
-        return res.json({ error: "User does not exist" });
+        return next(new ExpressError(`Username or Password is Invalid`, 401));
       }
     } else {
       const errors = [];
@@ -111,19 +91,13 @@ export async function login(req, res, next) {
         for (let err of result.errors) {
           errors.push(err);
         }
-        return res.json({
-          status: "error",
-          errors: errors,
-        });
+        return next(new ExpressError(`Validation Error: ${errors}`, 403));
       } else {
-        return res.json({
-          status: "error",
-          message: "Server error",
-        });
+        return next(new ExpressError(`Validation Error`, 403));
       }
     }
   } catch (error) {
     console.log("🚀 ~ file: auth.controller.js:134 ~ login ~ error:", error);
-    return res.json({ error: "Server Error", message: error });
+    return next(error);
   }
 }

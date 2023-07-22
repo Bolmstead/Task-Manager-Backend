@@ -13,8 +13,8 @@ export async function createTask(req, res, next) {
       required: true,
     });
     console.log(
-      "🚀 ~ file: task.controller.js:24 ~ createTask ~ result:",
-      result
+      "🚀 ~ file: task.controller.js:24 ~ createTask ~ result.valid:",
+      result.valid
     );
     if (result.valid) {
       const newTask = new Task({ ...req.body });
