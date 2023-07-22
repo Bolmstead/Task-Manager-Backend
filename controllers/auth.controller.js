@@ -1,7 +1,9 @@
 import bcrypt from "bcrypt";
 import jsonschema from "jsonschema";
+import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-import authSchema from "../schemas/auth.schema.json" assert { type: "json" };
+import loginSchema from "../schemas/login.schema.json" assert { type: "json" };
+import registerSchema from "../schemas/register.schema.json" assert { type: "json" };
 
 /**
  * Register and Login User
@@ -11,13 +13,10 @@ export async function register(req, res, next) {
     console.log("req.body", req.body);
     const { password, username } = req.body;
 
-    const schemaResult = jsonschema.validate(req.body, authSchema, {
+    const schemaResult = jsonschema.validate(req.body, registerSchema, {
       required: true,
     });
-    console.log(
-      "🚀 ~ file: task.controller.js:24 ~ createTask ~ schemaResult:",
-      schemaResult
-    );
+
     if (schemaResult.valid) {
       let foundUser = await User.findOne({ username });
 
@@ -63,11 +62,22 @@ export async function register(req, res, next) {
  */
 export async function login(req, res, next) {
   try {
-    const schemaResult = jsonschema.validate(req.body, authSchema, {
+    const schemaResult = jsonschema.validate(req.body, loginSchema, {
       required: true,
     });
-    if (schemaResult.isValid) {
-      const { username } = req.body;
+
+    console.log(
+      "🚀 ~ file: auth.controller.js:69 ~ login ~ schemaResult.valid:",
+      schemaResult.valid
+    );
+
+    if (schemaResult.valid) {
+      const { username, password } = req.body;
+
+      console.log(
+        "🚀 ~ file: auth.controller.js:72 ~ login ~ username:",
+        username
+      );
       let foundUser = await User.findOne({ username });
       console.log(
         "🚀 ~ file: auth.controller.js:55 ~ login ~ foundUser:",
@@ -101,13 +111,19 @@ export async function login(req, res, next) {
         for (let err of result.errors) {
           errors.push(err);
         }
+        return res.json({
+          status: "error",
+          errors: errors,
+        });
+      } else {
+        return res.json({
+          status: "error",
+          message: "Server error",
+        });
       }
-      return res.json({
-        status: "error",
-        errors: errors,
-      });
     }
-  } catch {
-    return res.json({ error: "Server Error" });
+  } catch (error) {
+    console.log("🚀 ~ file: auth.controller.js:134 ~ login ~ error:", error);
+    return res.json({ error: "Server Error", message: error });
   }
 }
