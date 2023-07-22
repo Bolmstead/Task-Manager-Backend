@@ -5,13 +5,16 @@ import { Router } from "express";
 import {
   createTask,
   getTaskDetails,
-  getTasks,
+  getAllTasks, getClientsAssignedTasks
 } from "../controllers/task.controller.js";
-import { ensureLoggedIn } from "../middlewares/auth.js";
+import { ensureLoggedIn, ensureUserIsAdmin } from "../middlewares/auth.js";
 const router = new Router();
 
-// get all tasks matching search query params
-router.get("/", ensureLoggedIn, getTasks);
+// get all tasks 
+router.get("/allTasks", ensureLoggedIn, ensureUserIsAdmin, getAllTasks);
+
+// get all of a Client's tasks 
+router.get("/allTasks", ensureLoggedIn, getClientsAssignedTasks);
 
 // get single task with task ID
 router.get("/task-details", ensureLoggedIn, getTaskDetails);

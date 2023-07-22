@@ -75,7 +75,7 @@ export async function login(req, res, next) {
 
         if (isPasswordValid) {
           const token = jwt.sign(
-            { username: foundUser.username },
+            { username: foundUser.username, isClient: foundUser.isClient },
             process.env.JWT_SECRET
           );
           return res.json({ token });

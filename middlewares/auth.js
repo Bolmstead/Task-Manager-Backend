@@ -32,4 +32,18 @@ function ensureLoggedIn(req, res, next) {
     return next(err);
   }
 }
-export { authenticateJWT, ensureLoggedIn };
+
+function ensureUserIsAdmin(req, res, next) {
+  try {
+    console.log("req.user in ensureUserIsAdmin", req.user);
+    if (req.user.isClient) {
+      throw new ExpressError("Unauthorized: User is not an Admin", 401);
+    }
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+}
+
+
+export { authenticateJWT, ensureLoggedIn, ensureUserIsAdmin };
