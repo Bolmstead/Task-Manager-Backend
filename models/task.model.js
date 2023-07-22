@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import { omitBy, isNil } from "lodash";
 
 const taskSchema = new Schema(
   {
@@ -28,7 +27,7 @@ const taskSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: "assignments",
       },
-    ]
+    ],
   },
   {
     timestamps: true,

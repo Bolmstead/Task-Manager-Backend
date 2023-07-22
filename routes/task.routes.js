@@ -7,16 +7,16 @@ import {
   getTaskDetails,
   getTasks,
 } from "../controllers/task.controller.js";
-
+import { ensureLoggedIn } from "../middlewares/auth.js";
 const router = new Router();
 
 // get all tasks matching search query params
-router.get("/", getTasks);
+router.get("/", ensureLoggedIn, getTasks);
 
 // get single task with task ID
-router.get("/task-details", getTaskDetails);
+router.get("/task-details", ensureLoggedIn, getTaskDetails);
 
 // create Task with optional Assignment
-router.post("/", createTask);
+router.post("/", ensureLoggedIn, createTask);
 
 export default router;

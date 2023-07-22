@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { json, urlencoded } from "express";
 import helmet from "helmet";
+import { authenticateJWT } from "./middlewares/auth.js";
 import routes from "./routes/index.js";
 // const error = require("../api/middlewares/error");
 
@@ -11,6 +12,10 @@ import routes from "./routes/index.js";
 // import productsRoutes from "./routes/tasksRoutes";
 
 import morgan from "morgan";
+// import initializePassport from "./config/passport-config.js"
+// import passport from "passport"
+// initializePassport(passport)
+
 dotenv.config();
 const app = express();
 app.use(helmet());
@@ -18,6 +23,7 @@ app.use(cors({ origin: "*" }));
 app.use(json());
 app.use(morgan("tiny"));
 app.use(urlencoded({ extended: true }));
+app.use(authenticateJWT);
 app.use("/", routes);
 // if error is not an instanceOf APIError, convert it.
 // app.use(error.converter);
