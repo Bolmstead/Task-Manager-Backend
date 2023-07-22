@@ -4,20 +4,20 @@
 import { Router } from "express";
 import {
   createTask,
-  getTaskDetails,
-  getAllTasks, getClientsAssignedTasks
+  getAllTasks,
+  getClientsAssignedTasks,
 } from "../controllers/task.controller.js";
 import { ensureLoggedIn, ensureUserIsAdmin } from "../middlewares/auth.js";
 const router = new Router();
 
-// get all tasks 
+// get all tasks
 router.get("/allTasks", ensureLoggedIn, ensureUserIsAdmin, getAllTasks);
 
-// get all of a Client's tasks 
+// get all of a Client's tasks
 router.get("/allTasks", ensureLoggedIn, getClientsAssignedTasks);
 
-// get single task with task ID
-router.get("/task-details", ensureLoggedIn, getTaskDetails);
+// // get single task with task ID
+// router.get("/task-details", ensureLoggedIn, getTaskDetails);
 
 // create Task with optional Assignment
 router.post("/", ensureLoggedIn, createTask);

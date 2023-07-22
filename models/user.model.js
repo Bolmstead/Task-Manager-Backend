@@ -21,7 +21,7 @@ const userSchema = new Schema(
     assignments: [
       {
         type: Schema.Types.ObjectId,
-        ref: "assignments",
+        ref: "Assignment",
       },
     ]
   },

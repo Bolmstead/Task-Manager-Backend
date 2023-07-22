@@ -2,11 +2,12 @@
 
 // const jsonschema = require("jsonschema");
 import { Router } from "express";
-import { createUser } from "../controllers/users";
+import { getUserDetails } from "../controllers/user.controller.js";
+import { ensureLoggedIn } from "../middlewares/auth.js";
 
 const router = new Router();
 
-// create User with data in request's body
-router.post("/", createUser);
+// Get User Details
+router.get("/:username", ensureLoggedIn, getUserDetails);
 
 export default router;

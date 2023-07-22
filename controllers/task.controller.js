@@ -1,6 +1,6 @@
 import jsonschema from "jsonschema";
 import Task from "../models/task.model.js";
-import Assignement from "../models/assignement.model.js";
+import Assignement from "../models/assignment.model.js";
 
 import taskSchema from "../schemas/task.schema.json" assert { type: "json" };
 

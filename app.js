@@ -5,8 +5,12 @@ import dotenv from "dotenv";
 import express, { json, urlencoded } from "express";
 import helmet from "helmet";
 import { authenticateJWT } from "./middlewares/auth.js";
-import routes from "./routes/index.js";
+import "./models/task.model.js";
+import "./models/user.model.js";
+import "./models/assignment.model.js";
+
 import { ExpressError } from "./expressError.js";
+import routes from "./routes/index.js";
 
 // const error = require("../api/middlewares/error");
 
