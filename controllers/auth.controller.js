@@ -29,12 +29,13 @@ export async function register(req, res, next) {
           "🚀 ~ file: auth.controller.js:24 ~ register ~ newUser:",
           newUser
         );
-        await newUser.save();
 
-        return res.json({
-          status: "success",
-          message: "User created",
-        });
+        const token = jwt.sign(
+          { username: newUser.username },
+          process.env.JWT_SECRET
+        );
+
+        return res.json({ token });
       } else {
         return next(new ExpressError(`Username already exists`, 403));
       }
@@ -75,7 +76,7 @@ export async function login(req, res, next) {
 
         if (isPasswordValid) {
           const token = jwt.sign(
-            { username: foundUser.username, isClient: foundUser.isClient },
+            { username: foundUser.username },
             process.env.JWT_SECRET
           );
           return res.json({ token });
