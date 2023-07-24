@@ -43,9 +43,23 @@ function ensureUserIsAdmin(req, res, next) {
   } catch (err) {
     return next(err);
   }
-
-  
+}
+function ensureUserIsAdminOrCorrectClient(req, res, next) {
+  try {
+    console.log("req.user in ensureUserIsAdmin", req.user);
+    console.log("req.params", req.params);
+    if (!req.user.isClient || req.user.username !== req.params.username) {
+      throw new ExpressError("Unauthorized: User is not an Admin", 401);
+    }
+    return next();
+  } catch (err) {
+    return next(err);
+  }
 }
 
-
-export { authenticateJWT, ensureLoggedIn, ensureUserIsAdmin };
+export {
+  authenticateJWT,
+  ensureLoggedIn,
+  ensureUserIsAdmin,
+  ensureUserIsAdminOrCorrectClient,
+};

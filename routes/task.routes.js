@@ -5,16 +5,25 @@ import { Router } from "express";
 import {
   createTask,
   getAllTasks,
-  getClientsAssignedTasks,
+  getClientsTasks,
 } from "../controllers/task.controller.js";
-import { ensureLoggedIn, ensureUserIsAdmin } from "../middlewares/auth.js";
+import {
+  ensureLoggedIn,
+  ensureUserIsAdmin,
+  ensureUserIsAdminOrCorrectClient,
+} from "../middlewares/auth.js";
 const router = new Router();
 
 // get all tasks
-router.get("/allTasks", ensureLoggedIn, ensureUserIsAdmin, getAllTasks);
+router.get("/all-tasks", ensureLoggedIn, ensureUserIsAdmin, getAllTasks);
 
 // get all of a Client's tasks
-router.get("/allTasks", ensureLoggedIn, getClientsAssignedTasks);
+router.get(
+  "/all-clients-tasks/:username",
+  ensureLoggedIn,
+  ensureUserIsAdminOrCorrectClient,
+  getClientsTasks
+);
 
 // // get single task with task ID
 // router.get("/task-details", ensureLoggedIn, getTaskDetails);

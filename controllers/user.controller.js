@@ -44,3 +44,16 @@ export async function getUserDetails(req, res, next) {
     return next(error);
   }
 }
+
+/**
+ * Grab all Clients
+ */
+export async function getAllClients(req, res, next) {
+  try {
+    let allClients = await User.find({ isClient: true });
+    return res.json({ clients: allClients });
+  } catch (error) {
+    console.log("🚀 ~ file: auth.controller.js:134 ~ login ~ error:", error);
+    return next(error);
+  }
+}

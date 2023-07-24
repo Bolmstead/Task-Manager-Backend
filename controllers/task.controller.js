@@ -71,7 +71,7 @@ export async function getAllTasks(req, res) {
  * Get task details
  * @public
  */
-export async function getClientsAssignedTasks(req, res) {
+export async function getClientsTasks(req, res) {
   try {
     if (req.user.username === req.body.username || !req.user.isClient) {
       let foundClient = await User.findOne({ username: req.body.username });

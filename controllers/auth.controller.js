@@ -4,17 +4,17 @@ import jwt from "jsonwebtoken";
 import { ExpressError } from "../expressError.js";
 import User from "../models/user.model.js";
 import loginSchema from "../schemas/login.schema.json" assert { type: "json" };
-import registerSchema from "../schemas/register.schema.json" assert { type: "json" };
+import signupSchema from "../schemas/signup.schema.json" assert { type: "json" };
 
 /**
- * Register and Login User
+ * Signup and Login User
  */
-export async function register(req, res, next) {
+export async function signup(req, res, next) {
   try {
     console.log("req.body", req.body);
     const { password, username } = req.body;
 
-    const schemaResult = jsonschema.validate(req.body, registerSchema, {
+    const schemaResult = jsonschema.validate(req.body, signupSchema, {
       required: true,
     });
 
@@ -26,7 +26,7 @@ export async function register(req, res, next) {
 
         const newUser = new User({ ...req.body, password: hashedPassword });
         console.log(
-          "🚀 ~ file: auth.controller.js:24 ~ register ~ newUser:",
+          "🚀 ~ file: auth.controller.js:24 ~ signup ~ newUser:",
           newUser
         );
 
@@ -49,7 +49,7 @@ export async function register(req, res, next) {
       return next(new ExpressError(`Validation Error: ${errors}`, 403));
     }
   } catch (error) {
-    return next(error);
+    return next(new ExpressError(`Server Error`, 500));
   }
 }
 
@@ -61,17 +61,34 @@ export async function login(req, res, next) {
     const schemaResult = jsonschema.validate(req.body, loginSchema, {
       required: true,
     });
+    console.log(
+      "🚀 ~ file: auth.controller.js:64 ~ login ~ schemaResult.valid:",
+      schemaResult.valid
+    );
 
     if (schemaResult.valid) {
       const { username, password } = req.body;
+      console.log(
+        "🚀 ~ file: auth.controller.js:68 ~ login ~ username, password:",
+        username,
+        password
+      );
 
       let foundUser = await User.findOne({ username });
+      console.log(
+        "🚀 ~ file: auth.controller.js:71 ~ login ~ foundUser:",
+        foundUser
+      );
 
       if (foundUser) {
         // compare hashed password to a new hash from password
         const isPasswordValid = await bcrypt.compare(
           password,
           foundUser.password
+        );
+        console.log(
+          "🚀 ~ file: auth.controller.js:89 ~ login ~ isPasswordValid:",
+          isPasswordValid
         );
 
         if (isPasswordValid) {
@@ -81,6 +98,7 @@ export async function login(req, res, next) {
           );
           return res.json({ token });
         } else {
+          console.log("made it 98!");
           return next(new ExpressError(`Username or Password is Invalid`, 401));
         }
       } else {
@@ -99,6 +117,6 @@ export async function login(req, res, next) {
     }
   } catch (error) {
     console.log("🚀 ~ file: auth.controller.js:134 ~ login ~ error:", error);
-    return next(error);
+    return next(new ExpressError(`Server Error`, 500));
   }
 }
