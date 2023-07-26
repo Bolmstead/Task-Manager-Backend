@@ -1,4 +1,3 @@
-import { ExpressError } from "../expressError.js";
 import Assignment from "../models/assignment.model.js";
 import User from "../models/user.model.js";
 
@@ -16,10 +15,10 @@ export async function getAllAssignments(req, res) {
     return res.json(assignments);
   } catch (error) {
     console.log(
-      "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
+      "🚀 ~ file: task.controller.js:62233 ~ getAllTasks ~ error:",
       error
     );
-    throw new ExpressError(error);
+    return next(err);
   }
 }
 
@@ -37,10 +36,10 @@ export async function getAllClientAssignments(req, res) {
     return res.json(assignments);
   } catch (error) {
     console.log(
-      "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
+      "🚀 ~ file: task.controller.js:612333 ~ getAllTasks ~ error:",
       error
     );
-    throw new ExpressError(error);
+    return next(err);
   }
 }
 
@@ -58,10 +57,10 @@ export async function getAssignmentDetails(req, res) {
     return res.json(assignment);
   } catch (error) {
     console.log(
-      "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
+      "🚀 ~ file: task.controller.js:61244233 ~ getAllTasks ~ error:",
       error
     );
-    throw new ExpressError(error);
+    return next(err);
   }
 }
 
@@ -70,21 +69,34 @@ export async function getAssignmentDetails(req, res) {
  */
 export async function editAssignmentDetails(req, res) {
   try {
+    console.log(
+      "🚀 ~ file: assignment.controller.js:72 ~ editAssignmentDetails ~ req.body:",
+      req.body
+    );
+
+    console.log("req.params.id", req.params.id);
     const assignment = await Assignment.findById(req.params.id)
       .populate("user")
       .populate("task")
       .sort({ createdAt: -1 });
 
     const { response, status, fileUpload } = req.body;
+    console.log(
+      "🚀 ~ file: assignment.controller.js:85 ~ editAssignmentDetails ~ response, status, fileUpload:",
+      response,
+      status,
+      fileUpload
+    );
 
     if (status) {
       assignment.status = status;
     }
+    console.log("assignment.status", assignment.status);
     if (response) {
       assignment.responses.push(response);
     }
     if (fileUpload) {
-      assignment.responses.push(fileUpload);
+      assignment.fileUploads.push(fileUpload);
     }
 
     const savedAssignment = await assignment.save();
@@ -92,10 +104,10 @@ export async function editAssignmentDetails(req, res) {
     return res.json(savedAssignment);
   } catch (error) {
     console.log(
-      "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
+      "🚀 ~ file: task.controller.js:6123232323 ~ getAllTasks ~ error:",
       error
     );
-    throw new ExpressError(error);
+    return next(err);
   }
 }
 
@@ -121,7 +133,7 @@ export async function editAssignmentDetails(req, res) {
 //     return res.json(tasks);
 //   } catch (error) {
 //     console.log(
-//       "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
+//       "🚀 ~ file: task.controller.12312",
 //       error
 //     );
 //     throw new ExpressError(error);

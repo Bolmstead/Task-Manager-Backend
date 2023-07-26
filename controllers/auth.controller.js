@@ -68,7 +68,7 @@ export async function signup(req, res, next) {
     }
   } catch (error) {
     console.log("🚀 ~ file: auth.controller.js:67 ~ signup ~ error:", error);
-    return next(new ExpressError(`Server Error`, 500));
+    return next(err);
   }
 }
 
@@ -136,6 +136,6 @@ export async function login(req, res, next) {
     }
   } catch (error) {
     console.log("🚀 ~ file: auth.controller.js:134 ~ login ~ error:", error);
-    return next(new ExpressError(`Server Error`, 500));
+    return next(err);
   }
 }

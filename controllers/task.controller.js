@@ -73,7 +73,7 @@ export async function createTask(req, res, next) {
       error
     );
 
-    throw new ExpressError(`Server Error`, 500);
+    return next(err);
   }
 }
 
@@ -94,10 +94,10 @@ export async function getAllTasks(req, res) {
     return res.json(tasks);
   } catch (error) {
     console.log(
-      "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
+      "🚀 ~ file: task.controller.js:63213232233 ~ getAllTasks ~ error:",
       error
     );
-    throw new ExpressError(error);
+    return next(err);
   }
 }
 
@@ -125,10 +125,10 @@ export async function getClientsTasks(req, res) {
     return res.json(tasks);
   } catch (error) {
     console.log(
-      "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
+      "🚀 ~ file: task.controller.js:62343 ~ getAllTasks ~ error:",
       error
     );
-    throw new ExpressError(error);
+    return next(err);
   }
 }
 
@@ -154,9 +154,9 @@ export async function getTaskDetails(req, res) {
     return res.json(tasks);
   } catch (error) {
     console.log(
-      "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
+      "🚀 ~ file: task.controller.js:613 ~ getAllTasks ~ error:",
       error
     );
-    throw new ExpressError(error);
+    return next(err);
   }
 }

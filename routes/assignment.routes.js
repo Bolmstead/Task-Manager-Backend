@@ -3,6 +3,7 @@
 // const jsonschema = require("jsonschema");
 import { Router } from "express";
 import {
+  editAssignmentDetails,
   getAllAssignments,
   getAllClientAssignments,
   getAssignmentDetails,
@@ -35,6 +36,6 @@ router.get(
 );
 
 // Edit Assignment Details
-router.put("/edit/:id", ensureLoggedIn, getAssignmentDetails);
+router.put("/edit/:id", ensureLoggedIn, editAssignmentDetails);
 
 export default router;
