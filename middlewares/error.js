@@ -2,7 +2,7 @@ import { NOT_FOUND } from "http-status";
 
 /**
  * Error handler. Send stacktrace only during development
- * @public
+
  */
 const handler = (err, req, res, next) => {
   const response = {
@@ -19,7 +19,7 @@ export { handler };
 
 /**
  * Catch 404 and forward to error handler
- * @public
+
  */
 export function notFound(req, res, next) {
   const err = {

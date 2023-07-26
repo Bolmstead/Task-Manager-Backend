@@ -7,7 +7,7 @@ import taskSchema from "../schemas/task.schema.json" assert { type: "json" };
 
 /**
  * Create new Task
- * @public
+
  */
 export async function createTask(req, res, next) {
   try {
@@ -79,7 +79,7 @@ export async function createTask(req, res, next) {
 
 /**
  * Get task
- * @public
+
  */
 export async function getAllTasks(req, res) {
   try {
@@ -103,7 +103,7 @@ export async function getAllTasks(req, res) {
 
 /**
  * Get task details
- * @public
+
  */
 export async function getClientsTasks(req, res) {
   try {
@@ -134,7 +134,7 @@ export async function getClientsTasks(req, res) {
 
 /**
  * Get task details
- * @public
+
  */
 export async function getTaskDetails(req, res) {
   try {

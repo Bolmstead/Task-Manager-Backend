@@ -34,4 +34,7 @@ router.get(
   getAssignmentDetails
 );
 
+// Edit Assignment Details
+router.put("/edit/:id", ensureLoggedIn, getAssignmentDetails);
+
 export default router;

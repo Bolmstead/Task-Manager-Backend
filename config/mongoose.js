@@ -1,5 +1,4 @@
-import { Promise as _Promise, connect, connection, set } from "mongoose";
-
+import { connect, connection, set } from "mongoose";
 
 // Exit application on error
 connection.on("error", (err) => {
@@ -13,7 +12,7 @@ set("debug", true);
  * Connect to mongo db
  *
  * @returns {object} Mongoose connection
- * @public
+
  */
 
 export function connect() {

@@ -4,7 +4,7 @@ import User from "../models/user.model.js";
 
 /**
  * Get all Assignments
- * @public
+
  */
 export async function getAllAssignments(req, res) {
   try {
@@ -25,7 +25,7 @@ export async function getAllAssignments(req, res) {
 
 /**
  * Get all Clients Assignments
- * @public
+
  */
 export async function getAllClientAssignments(req, res) {
   try {
@@ -46,7 +46,7 @@ export async function getAllClientAssignments(req, res) {
 
 /**
  * Get task details
- * @public
+
  */
 export async function getAssignmentDetails(req, res) {
   try {
@@ -65,9 +65,43 @@ export async function getAssignmentDetails(req, res) {
   }
 }
 
+/**
+ * Edit Assignment details
+ */
+export async function editAssignmentDetails(req, res) {
+  try {
+    const assignment = await Assignment.findById(req.params.id)
+      .populate("user")
+      .populate("task")
+      .sort({ createdAt: -1 });
+
+    const { response, status, fileUpload } = req.body;
+
+    if (status) {
+      assignment.status = status;
+    }
+    if (response) {
+      assignment.responses.push(response);
+    }
+    if (fileUpload) {
+      assignment.responses.push(fileUpload);
+    }
+
+    const savedAssignment = await assignment.save();
+
+    return res.json(savedAssignment);
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
+      error
+    );
+    throw new ExpressError(error);
+  }
+}
+
 // /**
 //  * Get task details
-//  * @public
+//
 //  */
 // export async function getTaskDetails(req, res) {
 //   try {

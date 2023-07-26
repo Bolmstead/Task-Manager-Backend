@@ -59,6 +59,8 @@ function ensureUserIsAdminOrCorrectClient(req, res, next) {
   }
 }
 
+
+
 export {
   authenticateJWT,
   ensureLoggedIn,
