@@ -48,8 +48,10 @@ function ensureUserIsAdminOrCorrectClient(req, res, next) {
   try {
     console.log("req.user in ensureUserIsAdmin", req.user);
     console.log("req.params", req.params);
-    if (!req.user.isClient || req.user.username !== req.params.username) {
-      throw new ExpressError("Unauthorized: User is not an Admin", 401);
+    if (req.user.isClient) {
+      if (req.user.username !== req.params.username) {
+        throw new ExpressError("Unauthorized: User is not an Admin", 401);
+      }
     }
     return next();
   } catch (err) {

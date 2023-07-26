@@ -2,11 +2,36 @@
 
 // const jsonschema = require("jsonschema");
 import { Router } from "express";
-import { assignTask } from "../controllers/assignments";
+import {
+  getAllAssignments,
+  getAllClientAssignments,
+  getAssignmentDetails,
+} from "../controllers/assignment.controller.js";
+import {
+  ensureLoggedIn,
+  ensureUserIsAdmin,
+  ensureUserIsAdminOrCorrectClient,
+} from "../middlewares/auth.js";
 
 const router = new Router();
 
-// assign Task to Clients 
-router.put("/:taskId", ensureLoggedIn, assignTask);
+// get all Assignments
+router.get("/all", ensureLoggedIn, ensureUserIsAdmin, getAllAssignments);
+
+// get client's Assignments
+router.get(
+  "/all/:clientId",
+  ensureLoggedIn,
+  ensureUserIsAdminOrCorrectClient,
+  getAllClientAssignments
+);
+
+// get details on a Task Assignment
+router.get(
+  "/details/:id",
+  ensureLoggedIn,
+  ensureUserIsAdminOrCorrectClient,
+  getAssignmentDetails
+);
 
 export default router;

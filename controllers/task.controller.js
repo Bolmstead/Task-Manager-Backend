@@ -1,7 +1,8 @@
 import jsonschema from "jsonschema";
+import { ExpressError } from "../expressError.js";
+import Assignment from "../models/assignment.model.js";
 import Task from "../models/task.model.js";
-import Assignement from "../models/assignment.model.js";
-
+import User from "../models/user.model.js";
 import taskSchema from "../schemas/task.schema.json" assert { type: "json" };
 
 /**
@@ -11,6 +12,7 @@ import taskSchema from "../schemas/task.schema.json" assert { type: "json" };
 export async function createTask(req, res, next) {
   try {
     console.log("req.body", req.body);
+
     const result = jsonschema.validate(req.body, taskSchema, {
       required: true,
     });
@@ -19,7 +21,37 @@ export async function createTask(req, res, next) {
       result.valid
     );
     if (result.valid) {
+      const { assignedClientUsernames } = req.body;
+
+      const assignedClients = [];
+
+      for (let clientUsername of assignedClientUsernames) {
+        const client = await User.findOne({ username: clientUsername });
+        if (!client) {
+          throw {
+            status: "error",
+            errors: `Unable to find client: ${clientUsername}`,
+          };
+        } else {
+          assignedClients.push(client);
+        }
+      }
+
+      console.log("assignedClients:", assignedClients);
       const newTask = new Task({ ...req.body });
+      console.log(
+        "🚀 ~ file: task.controller.js:42 ~ createTask ~ newTask:",
+        newTask
+      );
+
+      for (let client of assignedClients) {
+        const newAssignment = new Assignment({ task: newTask, user: client });
+        await newAssignment.save();
+        client.assignments.push(newAssignment);
+        await client.save();
+        newTask.assignments.push(newAssignment);
+      }
+
       await newTask.save();
 
       return res.json({
@@ -33,13 +65,15 @@ export async function createTask(req, res, next) {
           errors.push(err);
         }
       }
-      return res.json({
-        status: "error",
-        errors: errors,
-      });
+      throw new ExpressError(`Validation Error: ${errors}`, 400);
     }
   } catch (error) {
-    return res.json({ status: "error", error });
+    console.log(
+      "🚀 ~ file: task.controller.js:62 ~ createTask ~ error:",
+      error
+    );
+
+    throw new ExpressError(`Server Error`, 500);
   }
 }
 
@@ -63,7 +97,7 @@ export async function getAllTasks(req, res) {
       "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
       error
     );
-    return next(error);
+    throw new ExpressError(error);
   }
 }
 
@@ -76,18 +110,16 @@ export async function getClientsTasks(req, res) {
     if (req.user.username === req.body.username || !req.user.isClient) {
       let foundClient = await User.findOne({ username: req.body.username });
       if (foundClient) {
-        const tasks = await Assignement.find({})
-        .populate("assignments")
-        .sort({ createdAt: -1 });
-      console.log(
-        "🚀 ~ file: task.controller.js:60 ~ getAllTasks ~ tasks:",
-        tasks
-      );
+        const tasks = await Assignment.find({})
+          .populate("assignments")
+          .sort({ createdAt: -1 });
+        console.log(
+          "🚀 ~ file: task.controller.js:60 ~ getAllTasks ~ tasks:",
+          tasks
+        );
       } else {
         return next(new ExpressError(`Client not found`, 400));
-
       }
-
     }
 
     return res.json(tasks);
@@ -96,6 +128,35 @@ export async function getClientsTasks(req, res) {
       "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
       error
     );
-    return next(error);
+    throw new ExpressError(error);
+  }
+}
+
+/**
+ * Get task details
+ * @public
+ */
+export async function getTaskDetails(req, res) {
+  try {
+    let foundTask = await Task.findById(req.params.id).populate("assignments");
+    if (foundClient) {
+      const tasks = await Assignment.find({})
+        .populate("assignments")
+        .sort({ createdAt: -1 });
+      console.log(
+        "🚀 ~ file: task.controller.js:60 ~ getAllTasks ~ tasks:",
+        tasks
+      );
+    } else {
+      return next(new ExpressError(`Client not found`, 400));
+    }
+
+    return res.json(tasks);
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: task.controller.js:63 ~ getAllTasks ~ error:",
+      error
+    );
+    throw new ExpressError(error);
   }
 }

@@ -13,13 +13,26 @@ export async function signup(req, res, next) {
   try {
     console.log("req.body", req.body);
     const { password, username } = req.body;
+    console.log(
+      "🚀 ~ file: auth.controller.js:16 ~ signup ~ password, username:",
+      password,
+      username
+    );
 
     const schemaResult = jsonschema.validate(req.body, signupSchema, {
       required: true,
     });
+    console.log(
+      "🚀 ~ file: auth.controller.js:25 ~ signup ~ schemaResult:",
+      schemaResult
+    );
 
     if (schemaResult.valid) {
       let foundUser = await User.findOne({ username });
+      console.log(
+        "🚀 ~ file: auth.controller.js:23 ~ signup ~ foundUser:",
+        foundUser
+      );
 
       if (!foundUser) {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -29,10 +42,14 @@ export async function signup(req, res, next) {
           "🚀 ~ file: auth.controller.js:24 ~ signup ~ newUser:",
           newUser
         );
-
+        const savedUser = await newUser.save();
         const token = jwt.sign(
-          { username: newUser.username },
+          { username: savedUser.username },
           process.env.JWT_SECRET
+        );
+        console.log(
+          "🚀 ~ file: auth.controller.js:38 ~ signup ~ token:",
+          token
         );
 
         return res.json({ token });
@@ -42,13 +59,15 @@ export async function signup(req, res, next) {
     } else {
       const errors = [];
       if (schemaResult.errors) {
-        for (let err of result.errors) {
+        for (let err of schemaResult.errors) {
+          console.log("🚀 ~ file: auth.controller.js:48 ~ signup ~ err:", err);
           errors.push(err);
         }
       }
       return next(new ExpressError(`Validation Error: ${errors}`, 403));
     }
   } catch (error) {
+    console.log("🚀 ~ file: auth.controller.js:67 ~ signup ~ error:", error);
     return next(new ExpressError(`Server Error`, 500));
   }
 }
@@ -107,7 +126,7 @@ export async function login(req, res, next) {
     } else {
       const errors = [];
       if (schemaResult.errors) {
-        for (let err of result.errors) {
+        for (let err of schemaResult.errors) {
           errors.push(err);
         }
         return next(new ExpressError(`Validation Error: ${errors}`, 403));

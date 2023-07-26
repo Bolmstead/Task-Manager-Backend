@@ -11,17 +11,6 @@ const taskSchema = new Schema(
       type: String,
       trim: true,
     },
-    status: {
-      type: String,
-      trim: true,
-      required: true,
-      enum: ["To Do", "In Progress", "Done"],
-    },
-    creatorId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
     assignments: [
       {
         type: Schema.Types.ObjectId,

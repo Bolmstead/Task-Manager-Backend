@@ -6,6 +6,7 @@ import {
   createTask,
   getAllTasks,
   getClientsTasks,
+  getTaskDetails,
 } from "../controllers/task.controller.js";
 import {
   ensureLoggedIn,
@@ -15,7 +16,7 @@ import {
 const router = new Router();
 
 // get all tasks
-router.get("/all-tasks", ensureLoggedIn, ensureUserIsAdmin, getAllTasks);
+router.get("/all", ensureLoggedIn, ensureUserIsAdmin, getAllTasks);
 
 // get all of a Client's tasks
 router.get(
@@ -25,8 +26,13 @@ router.get(
   getClientsTasks
 );
 
-// // get single task with task ID
-// router.get("/task-details", ensureLoggedIn, getTaskDetails);
+// get single task with task ID
+router.get(
+  "/task-details/:id",
+  ensureLoggedIn,
+  ensureUserIsAdminOrCorrectClient,
+  getTaskDetails
+);
 
 // create Task with optional Assignment
 router.post("/", ensureLoggedIn, createTask);

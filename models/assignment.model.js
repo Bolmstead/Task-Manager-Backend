@@ -10,10 +10,12 @@ const assignmentSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    isCompleted: {
-      type: Boolean,
+    status: {
+      type: String,
+      trim: true,
       required: true,
-      default: false,
+      default: "To Do",
+      enum: ["To Do", "In Progress", "Done"],
     },
     fileUploads: [
       {
