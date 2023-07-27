@@ -1,6 +1,6 @@
 # API for the TaxRise Client and Task Managment Application
 
-A User Interface that enables Administrators to assign tasks to Clients and for Clients to complete and update these Tasks.
+The API that enables Administrators to assign tasks to Clients and for Clients to complete and update these Tasks.
 
 # Table of Contents
 
