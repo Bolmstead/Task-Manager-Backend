@@ -16,10 +16,19 @@ import {
 
 const router = new Router();
 
-// get all Assignments
-router.get("/all", ensureLoggedIn, ensureUserIsAdmin, getAllAssignments);
+/** GET => [{ assignment },{ assignment },...]
+ *
+ * Also provides nested Task and User information for each Assignment
+ *
+ * Authorization required: admin
+ */ router.get("/all", ensureLoggedIn, ensureUserIsAdmin, getAllAssignments);
 
-// get client's Assignments
+/** GET [assignmentId] => [{ assignment },{ assignment },...]
+ *
+ * Also provides nested Task and User information for each Assignment
+ *
+ * Authorization required: admin or correct client
+ */
 router.get(
   "/all/:clientId",
   ensureLoggedIn,
@@ -27,15 +36,29 @@ router.get(
   getAllClientAssignments
 );
 
-// get details on a Task Assignment
-router.get(
+/** GET [assignmentId] => { assignment }
+ *
+ * Also provides nested Task and User information for each Assignment
+ *
+ * Authorization required: admin or correct client
+ */ router.get(
   "/details/:id",
   ensureLoggedIn,
   ensureUserIsAdminOrCorrectClient,
   getAssignmentDetails
 );
 
-// Edit Assignment Details
-router.put("/edit/:id", ensureLoggedIn, editAssignmentDetails);
+/** PUT [assignmentId] => { assignment }
+ *
+ * Edits assignment based on payload body: {status, response, fileUploads}
+ *
+ * Authorization required: admin or correct client
+ */
+router.put(
+  "/edit/:id",
+  ensureLoggedIn,
+  ensureUserIsAdminOrCorrectClient,
+  editAssignmentDetails
+);
 
 export default router;

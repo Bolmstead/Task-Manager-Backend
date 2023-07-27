@@ -6,10 +6,20 @@ import { login, signup } from "../controllers/auth.controller.js";
 
 const router = new Router();
 
-// Create User and Log User in
+/** POST /auth/token:  { username, password } => { token }
+ *
+ * Returns JWT token which can be used to authenticate further requests.
+ *
+ * Authorization required: none
+ */
 router.post("/signup", signup);
 
-// Login to site
+/** POST /auth/register:   { username, password, isClient } => { token }
+ *
+ * Returns JWT token which can be used to authenticate further requests.
+ *
+ * Authorization required: none
+ */
 router.post("/login", login);
 
 export default router;
