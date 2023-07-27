@@ -386,7 +386,10 @@ Must be an Admin or the Client that is requesting. Only need to include one task
 Berkley Olmstead - olms2074@gmail.com - [Linkedin](https://www.linkedin.com/in/berkleyolmstead/)
 
 Project Links:
-[Live Site](https://taxrise-bolmstead.netlify.app)
+
+- [Live Site](https://freebay.netlify.app/)
+- [https://github.com/Bolmstead/taxrise-frontend](https://github.com/Bolmstead/taxrise-frontend)
+- [https://github.com/Bolmstead/taxrise-backend](https://github.com/Bolmstead/taxrise-backend)
 
 [node.js]: http://nodejs.org
 [React Bootstrap]: https://react-bootstrap.netlify.app/
