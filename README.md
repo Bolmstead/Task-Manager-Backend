@@ -238,6 +238,14 @@ Must be an admin
       "Authorization": "Bearer {{JSONWebToken}}"
     }
 
+#### Request:
+
+    {
+        "title": "Go for a workout",
+        "description": "Don't skip it",
+        "assignments": [{assignment}, {assignment}]
+    }
+
 ### Response:
 
     {
