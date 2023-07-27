@@ -3,287 +3,341 @@
 A User Interface that enables Administrators to assign tasks to Clients and for Clients to complete and update these Tasks.
 
 # Table of Contents
-
-1. [Products Routes](#Products-Routes)
+1. [How to Run the Project](#Run-Project)
+2. [Products Routes](#Products-Routes)
 2. [Authorization Routes](#Authorization-Routes)
 3. [User Route](#User-Route)
 4. [Notifications Route](#Notifications-Route)
 5. [Bids Routes](#Bids-Routes)
 6. [Products Won Routes](#Products-Won-Routes)
 7. [How to Run a Local Copy](#How-to-Run-a-Local-Copy)
-8. [Contact](#Contact)
+9. [Contact](#Contact)
 
-# Products Routes
 
-## Get Information on Products
+# How to Run the Project
+### Clone the Repo
 
-`GET /products`
-
-#### Search Parameters to Include in Optional Query String Request:
-
-| Query Name     | Type   | Example            | Description                                        |
-| -------------- | ------ | ------------------ | -------------------------------------------------- |
-| name           | String | iPod               | Products that contain this product name            |
-| category       | String | Home and Household | Products that contain this category                |
-| sub_category   | String | Movies and TV      | Products that contain this subcategory             |
-| description    | String | 70" 4k Television  | Products that contain this description             |
-| rating         | Number | 4.2                | Products that have at least this rating            |
-| num_of_ratings | Number | 302                | Products that have at least this number of ratings |
-
-### Response:
-
-    {
-      "products": [
-        {
-          "id": 2145,
-          "name": "MANGOPOP Women's Mock Turtle Neck Sleeveless Tank Top"
-          "category": "Fashion",
-          "subCategory": "Womens",
-          "description": "Great stretchy fabric  Modal  Spandex",
-          "rating": "5",
-          "numOfRatings": 1049,
-          "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/511iUnHsTXL._AC_UX342_.jpg",
-          "startingBid": "13",
-          "auctionEndDt": "2021-05-04T17:50:43.037Z",
-          "auctionEnded": false,
-          "bidderEmail": jimBob@gmail.com,
-          "bidderFirstName": Jim,
-          "bidderLastName": Bob,
-          "bidderUsername": Jimbo,
-          "bidPrice": 15,
-          "bidId": 2,
-          "isHighestBid": true,
-          "wasWinningBid": false
-        }
-      ],
-      "numOfProductsInAuction": 1
-    }
-
-## Get Information on a Product
-
-### Request:
-
-`GET /product/:id`
-
-### Response:
-
-    {
-      "productResult":
-        {
-          "id":7,
-          "name":"Wireless Indoor Cam with Night Vision",
-          "category":"Electronics",
-          "subCategory":"Photo",
-          "description":"This is a great camera.",
-          "rating":"4",
-          "numOfRatings":1101,
-          "imageUrl":"https://images-na.ssl-images-amazon.com/images/I/518Ngm46uuL._AC_SY450_.jpg",
-          "startingBid":"20",
-          "auctionEndDt":"2021-04-14T23:38:53.238Z",
-          "auctionEnded":true,
-          "bidderEmail":"olms2074@gmail.com",
-          "bidPrice":"35",
-          "isHighestBid":true,
-          "bidId":27,
-          "wasWinningBid":true,
-          "bidderUsername":"Bolmstead",
-          "numOfBids":"2"
-        }
-    }
-
-# Authorization Routes
-
-### Register User
-
-`POST /auth/register/`
-
-#### Request:
-
-    {
-      "email":  "email@email.com",
-      "username": "username",
-      "password": "password",
-      "firstName": "first",
-      "lastName": "last"
-    }
-
-#### Response:
-
-    { "token":"abcd123" }
-
-### Login User
-
-`POST /auth/login/`
-
-#### Request:
-
-    {
-      "email":  "email@email.com",
-      "username": "username"
-    }
-
-#### Response:
-
-    { "token":"abcd123" }
-
-# User Route
-
-## Get a Users Information
-
-### Request:
-
-`GET /users/:username`
-
-### Response:
-
-    {
-      "email": "email@gmail.com",
-      "username": "username",
-      "firstName": "firstname",
-      "lastName": "lastname",
-      "imageUrl": "www.google.com",
-      "balance": "78",
-      "bids": [],
-      "productsWon": [],
-      "notifications": []
-    }
-
-# Notifications Route
-
-## Set the Logged-In User's Notifications to Viewed
-
-### Request:
-
-`POST /notifications/view/`
-
-### Response:
-
-    { "success" }
-
-# Bids Routes
-
-## Check All Bids and Update Any Products if Auction Ended
-
-### Request:
-
-`GET /bids/check-all-bids-for-ended-auctions`
-
-### Response:
-
-    {
-      All bids check for ended auctions. # auctions have ended
-    }
-
-## Get Most Recent Bids
-
-### Request:
-
-`GET /bids/recent/:num`
-
-### Response:
-
-    [
-      {
-        "id": 1554,
-        "name": "Cutting Mat for Cricut Maker/Explore Air",
-        "category": "Sports, Hobbies, & Misc",
-        "subCategory": "Arts and Crafts",
-        "description": "Xinart cutting mat x ",
-        "rating": "2",
-        "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/61BoGCWperL._AC_SY450_.jpg",
-        "auctionEndDt": "2021-04-27T10:47:28.962Z",
-        "auctionEnded": false,
-        "bidId": 40,
-        "bidPrice": "2",
-        "bidTime": "2021-04-19T02:39:43.311Z",
-        "isHighestBid": true,
-        "wasWinningBid": false,
-        "bidderEmail": "olms2074@gmail.com",
-        "username": "username",
-        "email": "email@gmail.com"
-      }
-    ]
-
-## Place a Bid
-
-### Request:
-
-`POST /bids/:productId/placeBid/:amount`
-
-### Response:
-
-    { "success" }
-
-# Products Won Routes
-
-## Get Most Recent Products Won
-
-### Request:
-
-`GET /products-won/recent/:num`
-
-### Response:
-
-    [
-      {
-        "id":1174,
-        "name":"Workout Gear",
-        "category":"Fashion",
-        "subCategory":"Womens",
-        "description":"This is a great product!'",
-        "rating":"2",
-        "imageUrl":"https://images-na.ssl-images-amazon.com/images/I/61N4IJZixJL._AC_UX385_.jpg",
-        "auctionEndDt":"2021-04-25T00:06:10.597Z",
-        "auctionEnded":true,"bidPrice":"22",
-        "wonTime":"2021-04-26T03:06:26.161Z",
-        "username":"asdf",
-        "email":"asdfadsf@gmail.com",
-        "userImageUrl":"fasdfasdf"
-      }
-    ]
-
-# How to Run a Local Copy
-
-To get a local copy of the API up and running follow these steps:
-
-### Clone Repo
-
-1. Clone the backend repo to a separate directory by going to [https://github.com/freebay-backend](https://github.com/freebay-backend). From there, click Download Zip again from the green Code button at the top of the page or enter the following in a separate directory in your terminal:
+This API requires [Node.JS](https://nodejs.org/) v18.17+ to run. To get a local copy up and running follow these steps:
+1. Clone the backend repo to a separate directory by entering the following in a CLI:
    ```sh
-   git clone https://github.com/Bolmstead/freebay-backend.git
+   git clone https://github.com/Bolmstead/taxrise-backend.git
    ```
-
-### Library Installations
-
-2. After cloning each repo (and unzipping if downloaded), install the libraries in the backend repo.
+2. Install the libraries in the backend directory
 
    ```sh
    npm install
    ```
+   
+### Create a MondoDB Cluster
 
-### Postgres Installation
+3. Create a [MongoDB](https://www.mongodb.com/) account and create your own cluster.
+4. Create a MONGO_URI environment variable in your backend repository using your cluster's connection string as the value.
 
-3. Install [Postgres](https://www.postgresql.org/).
-4. Create a database named "freebay" in your terminal in the backend directory.
-   ```sh
-   createdb freebay
-   ```
+### Create Other Environment Variables in Backend Repository
 
-### Seed Products to Database
+5. If working in a local environment, set your NODE_ENV environment variable to "development". If working in production, set it to "production".
+6. Set a JWT_SECRET environment variable to a secure key of your choice.
 
-6. Run the following command in your terminal in the backend directory to create the database tables and seed products to database.
+### Start your project
 
-   ```sh
-   psql -d freebay -f SeedTablesAndProducts.sql
-   ```
+7. Run your local server in your backend repository:
 
-7. Start your server in the appropriate directory and you are done!
+    ```sh
+    npm start
+    ```
+
+# ------------------------
+## Authorization Routes
+## Signup 
+Provides JSON web token
+
+`POST /auth/signup`
+#### Request Body:
+
+    {
+      "username": "username",
+      "password": "password",
+      "isClient": true
+    }
+
+### Response:
+
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+    }
+
+## Login 
+Provides JSON web token
+
+`POST /auth/login`
+#### Request Body:
+
+    {
+      "username": "username",
+      "password": "password",
+      "isClient": true
+    }
+
+### Response:
+
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+    }
+
+# User Routes
+
+### Get All Clients
+
+`GET /users/all-clients/`
+#### Headers:
+    {
+      "Authorization": "Bearer {{JSONWebToken}}"
+    }
+#### Response:
+
+    [  
+      {
+        "username": "John Doe",
+        "isClient": true,
+        "assignments": [{assignment}, {assignment},...]
+      },
+      {
+        "username": "Bob Smith",
+        "isClient": true,
+        "assignments": [{assignment}, {assignment},...]
+      },
+    ]
+
+### Get a User's Details
+
+`GET /users/:username`
+#### Headers:
+    {
+      "Authorization": "Bearer {{JSONWebToken}}"
+    }
+
+#### Response:
+      {
+        "username": "Bob Smith",
+        "isClient": true,
+        "assignments": [{assignment}, {assignment},...]
+      }
+# Task Routes
+
+## Get all Tasks
+Must be an admin to request
+
+### Request:
+
+`GET /tasks/all`
+
+#### Headers:
+    {
+      "Authorization": "Bearer {{JSONWebToken}}"
+    }
+
+### Response:
+
+    [
+        {
+            "title": "Work on coding assessment",
+            "description": "Be meticulous",
+            "assignments": [{assignment}, {assignment},...]
+        },
+        {
+            "title": "Buy a coffee",
+            "description": "Light roast",
+            "assignments": [{assignment}, {assignment},...]
+        }
+    ]
+    
+## Get all of a Client's Tasks
+Must be an admin or the client that is requesting
+### Request:
+
+`GET /tasks/all-clients-tasks/:username`
+
+#### Headers:
+    {
+      "Authorization": "Bearer {{JSONWebToken}}"
+    }
+
+### Response:
+
+    [
+        {
+            "title": "Work on coding assessment",
+            "description": "Be meticulous",
+            "assignments": [{assignment}, {assignment},...]
+        },
+        {
+            "title": "Buy a coffee",
+            "description": "Extra caffeine",
+            "assignments": [{assignment}, {assignment},...]
+        }
+    ]
+    
+## Get Task Details
+Must be an admin or the client that is requesting
+### Request:
+
+`GET /tasks/task-details/:id`
+
+#### Headers:
+    {
+      "Authorization": "Bearer {{JSONWebToken}}"
+    }
+
+### Response:
+    {
+        "title": "Work on coding assessment",
+        "description": "Be  meticulous",
+        "assignments": [{assignment}, {assignment},...]
+    }
+    
+        
+## Create Task
+Must be an admin
+### Request:
+
+`POST /tasks`
+
+#### Headers:
+    {
+      "Authorization": "Bearer {{JSONWebToken}}"
+    }
+
+### Response:
+    {
+        "status": "success",
+        "message": "Task created"
+    }
+
+# Assignment Route
+
+## Get all Assignments
+Must be an Admin
+### Request:
+
+`GET /assignments/all/`
+
+#### Headers:
+    {
+      "Authorization": "Bearer {{JSONWebToken}}"
+    }
+
+### Response:
+    [
+        {
+            "task": {...Task},
+            "user": {...User},
+            "status": "To Do",
+            "fileUploads": ["www.asdf.com/link"]
+            "responses": ["Will start task"]
+        },
+        {
+            "task": {...Task},
+            "user": {...User},
+            "status": "In Progress",
+            "fileUploads": ["www.asdf.com/link", "www.asdf.com/link"]
+            "responses": ["Starting task now", "Almost completed"]
+        },
+    ]
+    
+    
+## Get all of a Client's Assignments
+Must be an Admin or the Client that is requesting
+### Request:
+
+`GET /assignments/all/:clientId`
+
+#### Headers:
+    {
+      "Authorization": "Bearer {{JSONWebToken}}"
+    }
+
+### Response:
+    [
+        {
+            "task": {...Task},
+            "user": {...User},
+            "status": "To Do",
+            "fileUploads": ["www.asdf.com/link"]
+            "responses": ["Will start task"]
+        },
+        {
+            "task": {...Task},
+            "user": {...User},
+            "status": "In Progress",
+            "fileUploads": ["www.asdf.com/link", "www.asdf.com/link"]
+            "responses": ["Starting task now", "Almost completed"]
+        },
+    ]
+    
+## Get an Assignment's Details
+Must be an Admin or the Client that is requesting
+### Request:
+
+`GET /assignments/details/:assignmentId`
+
+#### Headers:
+    {
+      "Authorization": "Bearer {{JSONWebToken}}"
+    }
+
+### Response:
+
+    {
+        "task": {...Task},
+        "user": {...User},
+        "status": "In Progress",
+        "fileUploads": ["www.asdf.com/link", "www.asdf.com/link"]
+        "responses": ["Starting task now", "Almost completed"]
+    }
+    
+## Edit an Assignment
+Must be an Admin or the Client that is requesting. Only need to include one task, user, status field in the body of the request. Can include more than one.
+### Request:
+
+`PUT /assignments/edit/:assignmentId`
+
+#### Headers:
+    {
+      "Authorization": "Bearer {{JSONWebToken}}"
+    }
+### Request:
+    {
+        "status": "Done"
+        "fileUpload": "www.finished.com/done"
+        "response": "Completed!"
+    }
+
+### Response:
+    {
+        "task": {...Task},
+        "user": {...User},
+        "status": "Done",
+        "fileUploads": ["www.asdf.com/link", "www.asdf.com/link", "www.finished.com/done"]
+        "responses": ["Starting task now", "Almost completed", "Completed!"]
+    }
 
 # Contact
 
 Berkley Olmstead - olms2074@gmail.com - [Linkedin](https://www.linkedin.com/in/berkleyolmstead/)
 
-Project Links: <br/>
-[Live Site](https://freebay.netlify.app/)<br/>
-[https://github.com/freebay-frontend](https://github.com/freebay-frontend) <br/>
+Project Links: 
+[Live Site](https://freebay.netlify.app/)
+[https://github.com/freebay-frontend](https://github.com/freebay-frontend) 
 [https://github.com/freebay-backend](https://github.com/freebay-backend)
+               
+               
+[node.js]: http://nodejs.org
+[React Bootstrap]: https://react-bootstrap.netlify.app/
+[Express.JS]: http://expressjs.com
+[ReactJS]: https://react.dev/
+[JSON Web Tokens]: https://www.npmjs.com/package/jsonwebtoken
+[UUID]: https://www.npmjs.com/package/uuid
+[Bcrypt]: https://www.npmjs.com/package/bcrypt
+[JSON Schema]: https://www.npmjs.com/package/jsonschema
+[Mongoose]: https://www.npmjs.com/package/mongoose
+[Firebase]: https://firebase.google.com/
