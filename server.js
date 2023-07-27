@@ -4,7 +4,7 @@ import { connect } from "mongoose";
 import app from "./app.js";
 
 connect(process.env.MONGO_URI).then(() => {
-  app.listen(8000, function () {
+  app.listen(process.env.PORT || 5000, function () {
     console.log(`Started`);
   });
 });
